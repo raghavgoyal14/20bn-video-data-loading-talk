@@ -1,22 +1,182 @@
-== Section 1 ==
+== Introduction ==
 
 ==== Outline ====
 
 \tableofcontents[currentsection]
 
-==== slide 1 ====
+==== The Problem ====
 
-* bullet 1
-* bullet 2
-* bullet 3
+<[block]{The Starving GPUs Problem}
+Getting GPUs fully utilized when training neural networks from large-scale
+video data can be challanging.
+[block]>
 
-==  Section 2 ==
+==== The Reason(s) ====
+
+* PCIe Bus
+* Storage medium
+* Data storage format and loader implementation
+
+==== PCIe Bus ====
+
+* Peripheral Component Interconnect Express
+* Connects CPU and GPU
+* Bandwidth (host-to-device) 16 GB/s (theoretical) 11 GB/s (measured)
+* Not much we can do about it, except to throw money at the problem with NVLink
+
+====  Storage Medium ====
+
+* This only applies if the data doesn't fit into memory (or filesystem cache)
+* Various technologies: magnetic disks and solid state disks
+* Various connectors SATA III / PCIe | U.2 | M.2
+* Bandwidth (one-way): 600 MB/s | 4 GB/s
+* Parallelization with RAID
+* Again: throw money at the problem
+
+====  Data storage format and loader implementation ====
+
+* Data storage format: how are the videos stored on disk?
+* Data loader implementation: how are the videos loaded during training?
+* This is all software and being smart here can have a high impact
+
+== Data Formats ==
 
 ==== Outline ====
 
 \tableofcontents[currentsection]
 
-=== Subsection 1 ===
+==== Data Formats: Bursted Frames or Encoded Videos ====
+
+* Insight: A video is just a series of images
+* Naive approach: decode the video into frames and store them on disk
+* Slightly better: store the frames one after another in a binary file
+* Maybe better: 
+
+==== GulpIO ====
+
+* A simple binary storage format
+* Essence: concatenated JPEGs on disk
+
+<[center]
+    <<<images/data_file_layout.pdf, scale=0.20>>>
+[center]>
+
+==== GulpIO ====
+
+* Initial implementation for Kinetics last year, helped us get 3rd place
+
+* https://github.com/TwentyBN/GulpIO
+* https://medium.com/twentybn/introducing-gulpio-f97b07f1da58
+
+* We are receiving pull-requests --> people are using it
+
+==== Encoded Videos ====
+
+* Principle: a video codec uses delta-compression and key frames. I.e. only \
+  certain frames are stored and the following frames are stored as a difference \
+  to these frames. \
+
+* Issue: Video Codecs might be lossy and optimized for subjective human video \
+  quality not for training
+
+==== Encoded Videos ====
+
+We have experience with:
+
+* \texttt{mp4} as container and \texttt{h264} as codec
+* \texttt{webm} as container and \texttt{vp9} as codec
+
+==== Encoded Videos ====[containsverbatim]
+
+* Assumption: smaller file size is better:
+
+<[verbatim]
+% ls -sh1 large_326ee10517267ff6e5be.*
+1,3M large_326ee10517267ff6e5be.mp4
+400K large_326ee10517267ff6e5be.webm
+[verbatim]>
+
+* But what about decoding?
+
+==== Frames vs. Videos ====[containsverbatim]
+
+<[verbatim]
+% ffmpeg -i large_326ee10517267ff6e5be.mp4 -q:v 1 -f image2
+  -r 15 -vf 'scale=512x512' 'video_%04d.jpg' 2> /dev/null
+% du -sch video_0*.jpg | tail -1
+5,0M	total
+[verbatim]>
+
+* Obviously depends on both frame rate (\texttt{15}) and resolution (\texttt{512x512})
+
+==== Optimizing Data for Loading ====
+
+Regardless of weather you choose bursted frames or videos, you can tweak
+frame-rate and resolution before training.
+
+== Data Loaders ==
+
+==== Outline ====
+
+\tableofcontents[currentsection]
+
+==== Open-Source Packages for Loading Videos ====
+
+* All of the following use \texttt{ffmpeg} and/or the underlying library \texttt{av}
+
+* scikit-video
+* moviepy
+* lintel
+* nvvl
+* PyAV
+
+==== scikit-video ====
+
+* Motto: \textit{Video Processing in Python}
+* http://www.scikit-video.org/stable/
+* Video loader inspired by \texttt{imageio}
+* However: uses \texttt{popen} to execute either \texttt{ffmpeg} or \texttt{avconv}
+* The result is a \texttt{fork} system call and multiple memory copies
+* --> slow
+
+==== MoviePY ====
+
+* Motto: \textit{Video Editing in Python}
+* http://zulko.github.io/moviepy/
+* suffers from the same implementation weakness as scikit-video
+* --> slow
+
+==== Lintel ====
+
+* Motto: \textit{A Python module to decode video frames directly, using the FFmpeg C API.}
+* https://github.com/dukebw/lintel
+* Fairly fresh library focussed on machine (deep) learning applications
+* Avoids the issues of \texttt{imamgeio}, \texttt{scikit-video} and \texttt{moviepy} (even mentions this in the readme)
+* However: segfaulted (and other issues) in the past
+* Tricky to install as it requires compilation from source (also of the dependencies)
+
+==== nvvl ====
+
+* Motto: \textit{A library that uses hardware acceleration to load sequences of video frames to facilitate machine learning training}
+* https://github.com/NVIDIA/nvvl
+* Should in principle decode the video \textit{on the GPU}
+* Theortically probably the smartest approach
+* However: We could never get this to work :(
+
+==== PyAV ====
+
+* Motto: \textit{Pythonic bindings for FFmpeg}
+* http://mikeboers.github.io/PyAV/
+* Fully fledged bindings using \texttt{cython}
+* Easy to install with \texttt{conda}
+* Can convert directly to \texttt{numpy} arrays
+* Anecdotal: We have seen memory leaks however...
+
+==== Micro Benchmarks ====
+
+* \texttt{scikit-video} vs. \texttt{PyAV} and \texttt{mp4/h264} vs.  * \texttt{webm/vp9}
+
+
 
 ==== Outline ====
 
