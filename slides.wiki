@@ -163,7 +163,7 @@ frame-rate and resolution before training.
 * Motto: \textit{A library that uses hardware acceleration to load sequences of video frames to facilitate machine learning training}
 * https://github.com/NVIDIA/nvvl
 * Should in principle decode the video \textit{on the GPU}
-* Theortically probably the smartest approach
+* Theoretically probably the smartest approach
 * However: We could never get this to work :(
 
 ==== Lintel ====
