@@ -157,15 +157,6 @@ frame-rate and resolution before training.
 * suffers from the same implementation weakness as scikit-video
 * --> slow
 
-==== Lintel ====
-
-* Motto: \textit{A Python module to decode video frames directly, using the FFmpeg C API.}
-* https://github.com/dukebw/lintel
-* Fairly fresh library focussed on machine (deep) learning applications
-* Avoids the issues of \texttt{imamgeio}, \texttt{scikit-video} and \texttt{moviepy} (even mentions this in the readme)
-* However: segfaulted (and other issues) in the past
-* Tricky to install as it requires compilation from source (also of the dependencies)
-
 ==== nvvl ====
 
 * Motto: \textit{A library that uses hardware acceleration to load sequences of video frames to facilitate machine learning training}
@@ -173,6 +164,15 @@ frame-rate and resolution before training.
 * Should in principle decode the video \textit{on the GPU}
 * Theortically probably the smartest approach
 * However: We could never get this to work :(
+
+==== Lintel ====
+
+* Motto: \textit{A Python module to decode video frames directly, using the FFmpeg C API.}
+* https://github.com/dukebw/lintel
+* Fairly fresh library focussed on machine (deep) learning applications
+* Avoids the issues of \texttt{imamgeio}, \texttt{scikit-video} and \texttt{moviepy} (even mentions this in the readme)
+* However: segfaults (currently: when reading \texttt{webm} files
+* Tricky to install as it requires compilation from source (also of the dependencies)
 
 ==== PyAV ====
 
