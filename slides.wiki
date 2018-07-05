@@ -154,7 +154,7 @@ frame-rate and resolution before training.
 
 * Motto: \textit{Video Editing in Python}
 * http://zulko.github.io/moviepy/
-* suffers from the same implementation weakness as scikit-video
+* Presumably suffers from the same implementation weakness as scikit-video
 * --> slow
 
 ==== nvvl ====
@@ -171,7 +171,7 @@ frame-rate and resolution before training.
 * https://github.com/dukebw/lintel
 * Fairly fresh library focussed on machine (deep) learning applications
 * Avoids the issues of \texttt{imamgeio}, \texttt{scikit-video} and \texttt{moviepy} (even mentions this in the readme)
-* However: segfaults (currently: when reading \texttt{webm} files
+* However: segfaults (currently: when reading \texttt{webm} files)
 * Tricky to install as it requires compilation from source (also of the dependencies)
 
 ==== PyAV ====
