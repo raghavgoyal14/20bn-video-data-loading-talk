@@ -199,69 +199,137 @@ frame-rate and resolution before training.
 
 * As stated earlier, we are assuming, that the dataset doesn't fit into memory and file-system cache.
 * In order to simulate this during benchmarking, we use a tool called \texttt{nocache}
-* This hijacks all systems calls to the file-system cache and thus the video is loaded from the storage medium each time
+* This hijacks all system-calls to the file-system cache and thus the video is loaded from the storage medium each time
 
 ==== Experimental Setup ====[containsverbatim]
 
-* Azure instance:
-* 24 CPU cores
+* Azure instance: NCv3 / 24 CPU cores / 4 Tesla V100 GPUs / storge unclear
+* Laptop: dell XPS 13 / 4 cores / random GPU / ssd
 * All Software installed using \texttt{miniconda}
 <[verbatim]
-av                        0.3.3                    py36_2    conda-forge
-sk-video                  1.1.10                     py_3    conda-forge
-ffmpeg                    3.4.2                         0    conda-forge
+    av                        0.3.3                    py36_2    conda-forge
+    sk-video                  1.1.10                     py_3    conda-forge
+    ffmpeg                    3.4.2                         0    conda-forge
 [verbatim]>
+* files are as follows:
+<[verbatim]
+    % ls -sh1 *.webm *.mp4
+     84K smth-smth-1.webm
+    1,3M video_large.mp4
+    400K video_large.webm
+[verbatim]>
+* Script and files available in the slides repository
 
-==== Without \texttt{nocache} ====[containsverbatim]
+==== Laptop with \texttt{nocache} ====[containsverbatim]
 
 <[nowiki]
 \begin{Verbatim}[fontsize=\scriptsize]
-In [3]: %timeit videodata = skvideo.io.vread('video.mp4')
-331 ms ± 28.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-
-In [4]: %timeit reader = skvideo.io.vreader('video.mp4') ; [img for img in reader]
-275 ms ± 17.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-
-In [5]: %timeit r = av.open('video.mp4') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
-428 ms ± 3.86 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-
-In [6]: %timeit videodata = skvideo.io.vread('video.webm')
-461 ms ± 23.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-
-In [7]: %timeit reader = skvideo.io.vreader('video.webm') ; [img for img in reader]
-453 ms ± 12 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-
-In [8]: %timeit r = av.open('video.webm') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
-316 ms ± 4.52 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+% nocache ipython benchmark.py 
+Using runner: 'skvideo_alpha' on file: 'video_large.mp4'
+439 ms ± 38.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.mp4'
+417 ms ± 46.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.mp4'
+382 ms ± 8.97 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'video_large.webm'
+569 ms ± 13.6 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.webm'
+577 ms ± 10.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.webm'
+242 ms ± 4.04 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'smth-smth-1.webm'
+274 ms ± 7.62 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'smth-smth-1.webm'
+269 ms ± 4.23 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'smth-smth-1.webm'
+45.5 ms ± 903 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+nocache ipython benchmark.py  37,50s user 7,35s system 146% cpu 30,641 total
 \end{Verbatim}
 [nowiki]>
 
-==== With \texttt{nocache} ====[containsverbatim]
+==== Laptop without \texttt{nocache} ====[containsverbatim]
 
 <[nowiki]
 \begin{Verbatim}[fontsize=\scriptsize]
-In [3]: %timeit videodata = skvideo.io.vread('video.mp4')
-2.15 s ± 24 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+% ipython benchmark.py 
+Using runner: 'skvideo_alpha' on file: 'video_large.mp4'
+333 ms ± 27.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.mp4'
+325 ms ± 7.37 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.mp4'
+376 ms ± 9.16 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'video_large.webm'
+419 ms ± 5.52 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.webm'
+426 ms ± 5.29 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.webm'
+242 ms ± 1.75 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'smth-smth-1.webm'
+118 ms ± 2.78 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'skvideo_beta' on file: 'smth-smth-1.webm'
+115 ms ± 2.87 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'pyav' on file: 'smth-smth-1.webm'
+45.5 ms ± 532 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+ipython benchmark.py  46,04s user 12,80s system 142% cpu 41,294 total
+\end{Verbatim}
+[nowiki]>
 
-In [4]: %timeit reader = skvideo.io.vreader('video.mp4') ; [img for img in reader]
-2.08 s ± 31.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 
-In [5]: %timeit r = av.open('video.mp4') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
-424 ms ± 3.47 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+==== Azure Instance with \texttt{nocache} ====[containsverbatim]
 
-In [6]: %timeit videodata = skvideo.io.vread('video.webm')
-3.75 s ± 72.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+<[nowiki]
+\begin{Verbatim}[fontsize=\scriptsize]
+$ nocache ipython benchmark.py 
+Using runner: 'skvideo_alpha' on file: 'video_large.mp4'
+1.21 s ± 11.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.mp4'
+1.19 s ± 17.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.mp4'
+410 ms ± 2.21 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'video_large.webm'
+2.09 s ± 8.61 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.webm'
+2.09 s ± 9.91 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.webm'
+310 ms ± 11.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'smth-smth-1.webm'
+1.79 s ± 7.79 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'smth-smth-1.webm'
+1.79 s ± 12.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'smth-smth-1.webm'
+55.3 ms ± 2.42 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+\end{Verbatim}
+[nowiki]>
 
-In [7]: %timeit reader = skvideo.io.vreader('video.webm') ; [img for img in reader]
-3.72 s ± 42.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+==== Azure Instance without \texttt{nocache} ====[containsverbatim]
 
-In [8]: %timeit r = av.open('video.webm') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
-316 ms ± 4.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+<[nowiki]
+\begin{Verbatim}[fontsize=\scriptsize]
+$ ipython benchmark.py 
+Using runner: 'skvideo_alpha' on file: 'video_large.mp4'
+223 ms ± 3.12 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.mp4'
+212 ms ± 3.18 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'pyav' on file: 'video_large.mp4'
+366 ms ± 6.72 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'video_large.webm'
+380 ms ± 3.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_beta' on file: 'video_large.webm'
+382 ms ± 6.75 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'pyav' on file: 'video_large.webm'
+299 ms ± 3.53 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'skvideo_alpha' on file: 'smth-smth-1.webm'
+95.5 ms ± 554 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'skvideo_beta' on file: 'smth-smth-1.webm'
+93.5 ms ± 408 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'pyav' on file: 'smth-smth-1.webm'
+54.8 ms ± 689 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 \end{Verbatim}
 [nowiki]>
 
 ==== Benchmarking during training ====[containsverbatim]
 
+* Anecdotal evidence
 * Here is something our Principle A.I. Researcher sent me
 * Average video loading time
 
