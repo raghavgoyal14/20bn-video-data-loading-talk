@@ -4,6 +4,16 @@
 
 \tableofcontents[currentsection]
 
+==== \texttt{whoami} ====
+
+* Valentin Haenel
+* V.P. Engineering @ TwentyBN
+* We have been training from videos for almost 24 months now
+
+<[center]
+    <<<images/20bn-logo.eps, scale=0.7>>>
+[center]>
+
 ==== The Problem ====
 
 <[block]{The Starving GPUs Problem}
