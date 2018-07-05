@@ -67,6 +67,7 @@ video data can be challanging.
 
 * A simple binary storage format
 * Essence: concatenated JPEGs on disk
+* Metadata in separate file
 
 <[center]
     <<<images/data_file_layout.pdf, scale=0.20>>>
