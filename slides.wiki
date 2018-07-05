@@ -60,7 +60,7 @@ video data can be challanging.
 * Insight: A video is just a series of images
 * Naive approach: decode the video into frames and store them on disk
 * Slightly better: store the frames one after another in a binary file
-* Maybe better: 
+* Maybe better:
 
 ==== GulpIO ====
 
@@ -102,8 +102,8 @@ We have experience with:
 
 <[verbatim]
 % ls -sh1 large_326ee10517267ff6e5be.*
-1,3M large_326ee10517267ff6e5be.mp4
-400K large_326ee10517267ff6e5be.webm
+1,3M video.mp4
+400K video.webm
 [verbatim]>
 
 * But what about decoding?
@@ -111,7 +111,7 @@ We have experience with:
 ==== Frames vs. Videos ====[containsverbatim]
 
 <[verbatim]
-% ffmpeg -i large_326ee10517267ff6e5be.mp4 -q:v 1 -f image2
+% ffmpeg -i video.mp4 -q:v 1 -f image2
   -r 15 -vf 'scale=512x512' 'video_%04d.jpg' 2> /dev/null
 % du -sch video_0*.jpg | tail -1
 5,0M	total
@@ -185,114 +185,121 @@ frame-rate and resolution before training.
 ==== Micro Benchmarks ====
 
 * \texttt{scikit-video} vs. \texttt{PyAV} and \texttt{mp4/h264} vs.  * \texttt{webm/vp9}
+* This will serve as an inidication of what we found in large scale trainings
+* Micro-benchmarks are always bullshit, so I encourage you to challange me and * run your own
 
-
-
-==== Outline ====
-
-\tableofcontents[currentsection,currentsubsection]
-
-==== Image Slide ====
-
-<[center]
-    <<<images/python-logo.pdf, scale=0.40>>>
-[center]>
-
-==== slide 2 ====
-
-* bullet 1
-* bullet 2
-* bullet 3
-
-=== Subsection 2 ===
+== Benchmarking ==
 
 ==== Outline ====
 
-\tableofcontents[currentsection,currentsubsection]
+\tableofcontents[currentsection]
 
-==== Block ====
+==== Interlude: \texttt{nocache} ====
 
-<[block]{Block Title}
-Block contents
-[block]>
+* As stated earlier, we are assuming, that the dataset doesn't fit into memory and file-system cache.
+* In order to simulate this during benchmarking, we use a tool called \texttt{nocache}
+* This hijacks all systems calls to the file-system cache and thus the video is loaded from the storage medium each time
 
-==== Special Symbols ====
+==== Experimental Setup ====[containsverbatim]
 
-* Tilde: \~{}
-* Tilde: \textasciitilde{}
-* Caret: \^{}
-* Hash: \#
-* Braces: \{\}
-* Dollar: \$
-* Double en: -{}-
-* At in Typewriter: {\tt stash@\{0\} }
-* Exclamation mark in alert: \alert{Attention!}
-
-or use: nowiki
-
-==== Correct Escapes  ====
-
-This only works with my patched version of wiki2beamer.
-
-* @HEAD \@ HEAD@
-* Attention\! Attention\!
-
-==== Verbatim ====[fragile]
-
-\begin{verbatim}
-
-wiki2beamer slides.wiki > slides.wiki.tex
-pdflatex slides.tex
-
-\end{verbatim}
-
-[frame]>
-
-==== Verbatim2 ====[containsverbatim]
-
+* Azure instance:
+* 24 CPU cores
+* All Software installed using \texttt{miniconda}
 <[verbatim]
-
-wiki2beamer slides.wiki > slides.wiki.tex
-pdflatex slides.tex
-
+av                        0.3.3                    py36_2    conda-forge
+sk-video                  1.1.10                     py_3    conda-forge
+ffmpeg                    3.4.2                         0    conda-forge
 [verbatim]>
 
-==== Verbatim Block ====[containsverbatim]
+==== Without \texttt{nocache} ====[containsverbatim]
 
-<[block]{Verbatim Block}
+<[nowiki]
+\begin{Verbatim}[fontsize=\scriptsize]
+In [3]: %timeit videodata = skvideo.io.vread('video.mp4')
+331 ms ± 28.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [4]: %timeit reader = skvideo.io.vreader('video.mp4') ; [img for img in reader]
+275 ms ± 17.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [5]: %timeit r = av.open('video.mp4') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
+428 ms ± 3.86 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [6]: %timeit videodata = skvideo.io.vread('video.webm')
+461 ms ± 23.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [7]: %timeit reader = skvideo.io.vreader('video.webm') ; [img for img in reader]
+453 ms ± 12 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [8]: %timeit r = av.open('video.webm') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
+316 ms ± 4.52 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+\end{Verbatim}
+[nowiki]>
+
+==== With \texttt{nocache} ====[containsverbatim]
+
+<[nowiki]
+\begin{Verbatim}[fontsize=\scriptsize]
+In [3]: %timeit videodata = skvideo.io.vread('video.mp4')
+2.15 s ± 24 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [4]: %timeit reader = skvideo.io.vreader('video.mp4') ; [img for img in reader]
+2.08 s ± 31.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [5]: %timeit r = av.open('video.mp4') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
+424 ms ± 3.47 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [6]: %timeit videodata = skvideo.io.vread('video.webm')
+3.75 s ± 72.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [7]: %timeit reader = skvideo.io.vreader('video.webm') ; [img for img in reader]
+3.72 s ± 42.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [8]: %timeit r = av.open('video.webm') ; imgs = [f.to_rgb().to_nd_array() for f in r.decode(video=0)]
+316 ms ± 4.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+\end{Verbatim}
+[nowiki]>
+
+==== Benchmarking during training ====[containsverbatim]
+
+* Here is something our Principle A.I. Researcher sent me
+* Average video loading time
+
 <[verbatim]
-
-wiki2beamer slides.wiki > slides.wiki.tex
-pdflatex slides.tex
-
+    |Dataset | Num workers = 1 | Num workers = 10 |
+    | ------ |:---------------:|:----------------:|
+    |SkVideo |     110.4 ms    |       12.7 ms    |
+    |PyAV    |     33.5 ms     |        5.3 ms    |
 [verbatim]>
-[block]>
 
-==== Code ====[containsverbatim]
+== Conclusion ==
 
-\begin{pycode}
-def python_func(arg):
-    print 'arg was: ', arg
+==== Outline ====
 
-python_func('Hello World!")
-\end{pycode}
+\tableofcontents[currentsection]
 
-==== Code from file ====
+==== Take-Home message ====
 
-\pyfile{code/code.py}
+* If your goal is to have the GPUs fully utilized:
+* \texttt{webm/vp9} is currently superior to \texttt{mp4/h264}
+* \texttt{PyAV} is currently the superior loader
+* Transcode your videos to the desired spatial and temporal resolution
+* All of the above may change at any time
+* Run your own benchmarks
 
-==== Example ====
+==== A shameless plug ====
 
-<[example]
-    This is an example
-[example]>
+* Last week at TwentyBN we released version 2 of our flagship dataset: \texttt{something-something}
+* https://20bn.com/datasets/something-something
+* Free for academic use, licences available for commercial use
+* We also released code to train some baselines under MIT licence
+* https://github.com/TwentyBN/something-something-v2-baseline
 
-==== Conclusion ====
+\hspace{0.5cm}
 
-* Open source tools used to make this presentation:
-** \href{http://wiki2beamer.sourceforge.net/}{Wiki2beamer}
-** \href{http://latex-beamer.sourceforge.net/}{\LaTeX beamer}
-** \href{http://projects.gnome.org/dia/}{Dia}
-** \href{http://pygments.org/}{Pygments}
-** \href{http://code.google.com/p/minted/}{Minted}
-** \href{https://bitbucket.org/john2x/solarized-pygment}{Solarized theme for pygments}
+* Yes the files are in \texttt{webm/vp9} format and yes there is a \texttt{PyAV} based loader
+
+* Contact: \texttt{v@20bn.com}
+
+\hspace{0.5cm}
+
+* Questions?
