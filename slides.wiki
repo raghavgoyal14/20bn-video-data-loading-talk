@@ -33,6 +33,7 @@ video data can be challanging.
 * Connects CPU and GPU
 * Bandwidth (host-to-device) 16 GB/s (theoretical) 11 GB/s (measured)
 * Not much we can do about it, except to throw money at the problem with NVLink
+* DGX-1 etc... but we might not have access to fancy hardware
 
 ==== If you are building a desktop rig... ====
 
