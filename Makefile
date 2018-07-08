@@ -1,5 +1,5 @@
 base = slides
-slidefilename = NAME
+slidefilename=20bn-video-data-loading-talk
 
 .PHONY: git-sha
 
