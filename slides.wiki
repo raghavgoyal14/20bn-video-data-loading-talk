@@ -108,7 +108,8 @@ We have experience with:
 
 ==== Encoded Videos ====[containsverbatim]
 
-* Assumption: smaller file size is better:
+* Assumption: smaller file size is better
+* Less overhead when loading the data from disk
 
 <[verbatim]
 % ls -sh1 large_326ee10517267ff6e5be.*
