@@ -14,6 +14,12 @@
     <<<images/20bn-logo.eps, scale=0.7>>>
 [center]>
 
+==== Quick Survey ====
+
+* Who does deep learning?
+* Who does deep learning on videos?
+* Who would like to do deep learning on videos?
+
 ==== The Problem ====
 
 <[block]{The Starving GPUs Problem}
