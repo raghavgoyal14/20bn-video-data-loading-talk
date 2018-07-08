@@ -364,7 +364,7 @@ Using runner: 'pyav' on file: 'smth-smth-1.webm'
 * \texttt{PyAV} is currently the superior loader
 * Transcode your videos to the desired spatial and temporal resolution
 * All of the above may change at any time
-* Run your own benchmarks
+* Run your own benchmarks...
 
 ==== A shameless plug ====
 
