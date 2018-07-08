@@ -163,14 +163,14 @@ frame-rate and resolution before training.
 * Video loader inspired by \texttt{imageio}
 * However: uses \texttt{popen} to execute either \texttt{ffmpeg} or \texttt{avconv}
 * The result is a \texttt{fork} system call and multiple memory copies
-* --> slow
+* --> maybe slow
 
 ==== MoviePY ====
 
 * Motto: \textit{Video Editing in Python}
 * http://zulko.github.io/moviepy/
 * Presumably suffers from the same implementation weakness as scikit-video
-* --> slow
+* --> maybe slow
 
 ==== nvvl ====
 
