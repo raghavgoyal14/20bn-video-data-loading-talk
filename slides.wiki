@@ -182,6 +182,7 @@ frame-rate and resolution before training.
 * Fairly fresh library focussed on machine (deep) learning applications
 * Avoids the issues of \texttt{imamgeio}, \texttt{scikit-video} and \texttt{moviepy} (even mentions this in the readme)
 * However: segfaults (currently: when reading \texttt{webm} files)
+* However: submitted issues are taken care of within 24 hours
 * Tricky to install as it requires compilation from source (also of the dependencies)
 
 ==== PyAV ====
