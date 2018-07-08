@@ -98,6 +98,7 @@ In this talk, I'll present what we learnt at TwentyBN over the last 2 years.
 * https://medium.com/twentybn/introducing-gulpio-f97b07f1da58
 
 * We are receiving pull-requests --> people are using it
+* Has 95 stars on github
 
 ==== Encoded Videos ====
 
