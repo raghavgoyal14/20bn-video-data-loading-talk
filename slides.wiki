@@ -8,7 +8,7 @@
 
 * Valentin Haenel
 * V.P. Engineering @ TwentyBN
-* We have been training from videos for almost 24 months now
+* \textit{We teach machines to perceive the world like humans}
 
 <[center]
     <<<images/20bn-logo.eps, scale=0.7>>>
