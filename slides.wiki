@@ -377,6 +377,11 @@ Using runner: 'pyav' on file: 'smth-smth-1.webm'
 * All of the above may change at any time
 * Run your own benchmarks...
 
+==== Thanks! ====
+
+I'd like to thank everyone at TwentyBN for the tests they ran and the feedback
+on the slides.
+
 ==== A shameless plug ====
 
 * Last week at TwentyBN we released version 2 of our flagship dataset: \texttt{something-something}
