@@ -34,6 +34,13 @@ video data can be challanging.
 * Bandwidth (host-to-device) 16 GB/s (theoretical) 11 GB/s (measured)
 * Not much we can do about it, except to throw money at the problem with NVLink
 
+==== If you are building a desktop rig... ====
+
+* If you are adding two GPUs:
+* make sure that your CPU supports 40 PCIe lanes (not 28)
+* Otherwise you can't have full bandwidth to both GPUs
+* use the \texttt{bandwidthTest} if in doubt
+
 ====  Storage Medium ====
 
 * This only applies if the data doesn't fit into memory (or filesystem cache)
