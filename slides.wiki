@@ -51,6 +51,11 @@ video data can be challanging.
 * Parallelization with RAID
 * Again: throw money at the problem
 
+==== What should I buy?  ====
+
+* Get an SSD, the bigger the better
+* Connect via PCIe or M.2 or U.2
+
 ====  Data storage format and loader implementation ====
 
 * Data storage format: how are the videos stored on disk?
