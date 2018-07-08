@@ -27,6 +27,10 @@ video data can be challanging.
 * Storage medium
 * Data storage format and loader implementation
 
+\hspace{1cm}
+
+In this talk, I'll present what we learnt at TwentyBN over the last 2 years.
+
 ==== PCIe Bus ====
 
 * Peripheral Component Interconnect Express
