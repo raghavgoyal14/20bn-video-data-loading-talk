@@ -192,7 +192,7 @@ frame-rate and resolution before training.
 * Fully fledged bindings using \texttt{cython}
 * Easy to install with \texttt{conda}
 * Can convert directly to \texttt{numpy} arrays
-* Anecdotal: We have seen memory leaks however...
+* Anecdotal: We have seen memory leaks however, especially with mp4 files
 
 ==== Micro Benchmarks ====
 
