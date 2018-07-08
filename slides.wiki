@@ -127,10 +127,10 @@ We have experience with:
 ==== Frames vs. Videos ====[containsverbatim]
 
 <[verbatim]
-% ffmpeg -i video.mp4 -q:v 1 -f image2
-  -r 15 -vf 'scale=512x512' 'video_%04d.jpg' 2> /dev/null
-% du -sch video_0*.jpg | tail -1
-5,0M	total
+    % ffmpeg -i video.mp4 -q:v 1 -f image2
+      -r 15 -vf 'scale=512x512' 'video_%04d.jpg' 2> /dev/null
+    % du -sch video_0*.jpg | tail -1
+    5,0M	total
 [verbatim]>
 
 * Obviously depends on both frame rate (\texttt{15}) and resolution (\texttt{512x512})
