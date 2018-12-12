@@ -98,6 +98,14 @@ Not valid for this file
 
 ```
 
+#### NVVL
+Somehow the `mpeg4` and `webm` transcoded files produces an error with `nvvl`:
 ```
+Using runner: 'nvvl' on file: 'video_large_mpeg4.mp4'
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  File video_large_mpeg4.mp4 is not the same size and codec as previous files. This is not yet supported. (640x480 instead of 640x480 or codec 13 != 28
 
+Using runner: 'nvvl' on file: 'video_large.webm'
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  File video_large.webm is not the same size and codec as previous files. This is not yet supported. (640x480 instead of 640x480 or codec 168 != 28)
 ```

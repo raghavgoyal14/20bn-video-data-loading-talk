@@ -32,12 +32,6 @@ files = [large_mp4_h264,
          large_webm,
          small_webm]
 
-"""
-Using runner: 'nvvl' on file: 'video_large_mpeg4.mp4'
-terminate called after throwing an instance of 'std::runtime_error'
-  what():  File video_large_mpeg4.mp4 is not the same size and codec as previous files. This is not yet supported. (640x480 instead of 640x480 or codec 13 != 28
-"""
-
 for fi, ru in ((fi, ru) for fi in files for ru in runners):
     print("Using runner: '{}' on file: '{}'".format(ru[1], fi))
     if ru[1] == "nvvl" and (fi.endswith('webm') or "mpeg4" in fi):
