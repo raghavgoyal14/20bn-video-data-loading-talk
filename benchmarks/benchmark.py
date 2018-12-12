@@ -14,11 +14,13 @@ runners = [(skvideo_alpha, 'skvideo_alpha'),
            ]
 
 
-large_mp4 = "video_large.mp4"
+large_mp4_h264 = "video_large.mp4"
+large_mp4_mpeg4 = "video_large_mpeg4.mp4"
 large_webm = "video_large.webm"
 small_webm = "smth-smth-1.webm"
 
-files = [large_mp4,
+files = [large_mp4_h264,
+         large_mp4_mpeg4,
          large_webm,
          small_webm]
 
