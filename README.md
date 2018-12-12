@@ -61,30 +61,43 @@ Using `nocache` and deleting video files from fs cache using `cachedel`
 
 ```
 Using runner: 'skvideo_alpha' on file: 'video_large.mp4'
-385 ms ± 5.62 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+382 ms ± 4.46 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'skvideo_beta' on file: 'video_large.mp4'
-399 ms ± 11.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+388 ms ± 4.13 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'pyav' on file: 'video_large.mp4'
-333 ms ± 4.77 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+332 ms ± 1.75 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'nvvl' on file: 'video_large.mp4'
+55.7 ms ± 5.68 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 
 Using runner: 'skvideo_alpha' on file: 'video_large_mpeg4.mp4'
-357 ms ± 4.65 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+569 ms ± 8.51 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'skvideo_beta' on file: 'video_large_mpeg4.mp4'
-388 ms ± 6.95 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+584 ms ± 5.41 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'pyav' on file: 'video_large_mpeg4.mp4'
-133 ms ± 1.47 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+132 ms ± 663 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'nvvl' on file: 'video_large_mpeg4.mp4'
+Not valid for this file
 
 Using runner: 'skvideo_alpha' on file: 'video_large.webm'
-576 ms ± 9.96 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+883 ms ± 9.89 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'skvideo_beta' on file: 'video_large.webm'
-588 ms ± 4.57 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+908 ms ± 12.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'pyav' on file: 'video_large.webm'
-229 ms ± 4.85 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+227 ms ± 1.72 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Using runner: 'nvvl' on file: 'video_large.webm'
+Not valid for this file
 
 Using runner: 'skvideo_alpha' on file: 'smth-smth-1.webm'
-287 ms ± 5.69 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+612 ms ± 3.51 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'skvideo_beta' on file: 'smth-smth-1.webm'
-288 ms ± 6.41 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+617 ms ± 5.72 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 Using runner: 'pyav' on file: 'smth-smth-1.webm'
-42.6 ms ± 522 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+42.5 ms ± 944 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Using runner: 'nvvl' on file: 'smth-smth-1.webm'
+Not valid for this file
+
+```
+
+```
+
 ```
